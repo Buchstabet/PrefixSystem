@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class PlayerDataHolder extends ArrayList<PlayerData>
@@ -20,7 +21,7 @@ public class PlayerDataHolder extends ArrayList<PlayerData>
     return prefixColors.loadColor(player.getUniqueId()).thenApply(prefixColor -> {
       prefixColor.ifPresent(color -> player.sendMessage(color.getId() + " was selected"));
 
-      PlayerData playerData = new PlayerData(player.getUniqueId());
+      PlayerData playerData = new PlayerData(player.getUniqueId(), player.getName());
       playerData.setTeam(teamHolder.loadTeam(player));
       prefixColor.ifPresent(playerData::setColor);
       return playerData;
@@ -52,8 +53,13 @@ public class PlayerDataHolder extends ArrayList<PlayerData>
       }
 
       player.sendMessage("Dein Team ist nun " + playerData.getTeam().getId());
-      this.add(playerData);
-      playerData.updatePrefix();
+
+      Bukkit.getScheduler().runTask(Prefixes.getInstance(), () -> {
+        playerData.setPlayerListData(new PlayerListData(player));
+        playerData.getPlayerListData().initPlayers();
+        this.add(playerData);
+        playerData.updatePrefix();
+      });
     });
   }
 }

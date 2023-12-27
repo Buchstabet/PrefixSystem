@@ -23,5 +23,11 @@ public class PlayerJoinListener implements Listener
     PlayerDataHolder playerDataHolder = Prefixes.getInstance().get(PlayerDataHolder.class);
     playerDataHolder.removeIf(
         playerData -> playerData.getUuid().equals(event.getPlayer().getUniqueId()));
+
+    //event.getPlayer().setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
+
+    playerDataHolder.forEach(playerListData -> playerListData.getPlayerListData().unregister(playerListData));
   }
+
+
 }

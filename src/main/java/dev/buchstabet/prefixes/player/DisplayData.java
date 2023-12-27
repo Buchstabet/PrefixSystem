@@ -5,19 +5,11 @@ import lombok.Getter;
 public class DisplayData
 {
 
-  @Getter private final String format;
   @Getter private final String prefix, suffix;
 
-  public DisplayData(String format)
+  public DisplayData(String prefix, String suffix)
   {
-    this.format = format;
-    String[] strings = format.split("%p");
-
-    if (strings.length != 2) {
-      throw new IllegalArgumentException("Input not in the correct format.");
-    }
-
-    this.prefix = strings[0];
-    this.suffix = strings[1];
+    this.prefix = prefix;
+    this.suffix = suffix;
   }
 }

@@ -10,9 +10,9 @@ public class MultiColorPrefix extends AbstractPrefixColor
   private final List<String> colors;
   private final int skipAfter;
 
-  public MultiColorPrefix(UUID uuid, List<String> colors, int skipAfter)
+  public MultiColorPrefix(UUID uuid, String permission, List<String> colors, int skipAfter)
   {
-    super(uuid);
+    super(uuid, permission);
     this.colors = colors;
     this.skipAfter = skipAfter;
   }
@@ -43,4 +43,6 @@ public class MultiColorPrefix extends AbstractPrefixColor
 
     return super.colorize(stringBuilder.toString(), type);
   }
+
+
 }

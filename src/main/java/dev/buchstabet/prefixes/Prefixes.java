@@ -9,6 +9,9 @@ import dev.buchstabet.prefixes.player.PlayerData;
 import dev.buchstabet.prefixes.player.PlayerDataHolder;
 import dev.buchstabet.prefixes.prefixcolor.PrefixColor;
 import dev.buchstabet.prefixes.prefixcolor.PrefixColorHolder;
+import dev.buchstabet.prefixes.prefixcolor.colorsetup.MultiColorPrefixSetup;
+import dev.buchstabet.prefixes.prefixcolor.colorsetup.OneColorPrefixSetup;
+import dev.buchstabet.prefixes.prefixcolor.colorsetup.PrefixNameSuffixSetup;
 import dev.buchstabet.prefixes.team.Team;
 import dev.buchstabet.prefixes.team.TeamHolder;
 import dev.buchstabet.prefixes.utils.Database;
@@ -29,6 +32,7 @@ import java.util.function.Consumer;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -56,9 +60,12 @@ public class Prefixes extends JavaPlugin
     });
 
     loadConfig(TeamHolder.class, new File("plugins/prefixes", "teams.json"), () -> {
-      Team team = new Team(UUID.randomUUID(), 99, new DisplayData("§7Spieler ~ %p "),
-          new DisplayData("§7%p "), new DisplayData("&7Spieler &8- &f%p &7(default)"), null);
-      return new TeamHolder(team.getId(), Arrays.asList(team));
+      Team player = new Team(UUID.randomUUID(), 99, ChatColor.GRAY, new DisplayData("§7Spieler | ", ""),
+          new DisplayData("§7", ""), new DisplayData("§7Spieler §8- §f", ""), null);
+
+      Team admin = new Team(UUID.randomUUID(), 1, ChatColor.DARK_RED, new DisplayData("§4Op | ", ""),
+          new DisplayData("§7", ""), new DisplayData("§4Operator §8- §f", ""), "prefix.operator");
+      return new TeamHolder(player.getId(), Arrays.asList(player, admin));
     });
     loadConfig(PrefixColorHolder.class, new File("plugins/prefixes", "colors.json"),
         PrefixColorHolder::new);
@@ -76,7 +83,13 @@ public class Prefixes extends JavaPlugin
     register(hikariDataSource);
 
     getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
-    Objects.requireNonNull(getCommand("prefix")).setExecutor(new PrefixCommand());
+
+    PrefixCommand prefixCommand = new PrefixCommand();
+    prefixCommand.registerSetup("multicolor", new MultiColorPrefixSetup());
+    prefixCommand.registerSetup("pns", new PrefixNameSuffixSetup());
+    prefixCommand.registerSetup("onecolor", new OneColorPrefixSetup());
+    Objects.requireNonNull(getCommand("prefix")).setExecutor(prefixCommand);
+
     PlayerDataHolder playerData = new PlayerDataHolder();
     Bukkit.getOnlinePlayers().forEach(playerData::add);
 

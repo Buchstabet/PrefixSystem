@@ -27,7 +27,7 @@ public class TeamHolder
         continue;
       }
 
-      if (selected.getPriorityValue() < team.getPriorityValue()) {
+      if (selected.getPriorityValue() > team.getPriorityValue()) {
         selected = team;
       }
     }

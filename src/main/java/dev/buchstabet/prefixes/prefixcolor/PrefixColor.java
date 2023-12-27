@@ -17,6 +17,8 @@ public interface PrefixColor
 
   UUID getId();
 
+  String getPermission();
+
   String colorize(String input, DisplayNameType type);
 
   class Serializer implements JsonDeserializer<PrefixColor>, JsonSerializer<PrefixColor>

@@ -6,7 +6,8 @@ public class ColorUtil
 {
 
 
-  public static String colorize(final String textToTranslate) {
+  public static String colorize(final String textToTranslate)
+  {
     final StringBuilder b = new StringBuilder();
     final char[] mess = textToTranslate.toCharArray();
     boolean color = false, hashtag = false, doubleTag = false;
@@ -29,7 +30,8 @@ public class ColorUtil
           for (int n = i; n < max; n++) {
             tmp = mess[n];
             // The order of the checks below is meant to improve performances (i.e. capital letters check is at the end)
-            if (!((tmp >= '0' && tmp <= '9') || (tmp >= 'a' && tmp <= 'f') || (tmp >= 'A' && tmp <= 'F'))) {
+            if (!((tmp >= '0' && tmp <= '9') || (tmp >= 'a' && tmp <= 'f') || (tmp >= 'A'
+                && tmp <= 'F'))) {
               // It wasn't a hex color, appending found chars to the StringBuilder and continue the for loop
               match = false;
               break;
@@ -79,7 +81,8 @@ public class ColorUtil
           for (int n = i; n < max; n++) {
             tmp = mess[n];
             // The order of the checks below is meant to improve performances (i.e. capital letters check is at the end)
-            if (!((tmp >= '0' && tmp <= '9') || (tmp >= 'a' && tmp <= 'f') || (tmp >= 'A' && tmp <= 'F'))) {
+            if (!((tmp >= '0' && tmp <= '9') || (tmp >= 'a' && tmp <= 'f') || (tmp >= 'A'
+                && tmp <= 'F'))) {
               // It wasn't a hex color, appending found chars to the StringBuilder and continue the for loop
               match = false;
               break;
@@ -105,7 +108,6 @@ public class ColorUtil
         // Malformed hex, let's carry on checking mess[i]
       }
 
-
       if (color) { // Color module
         color = false;
 
@@ -116,7 +118,8 @@ public class ColorUtil
         }
 
         // The order of the checks below is meant to improve performances (i.e. capital letters check is at the end)
-        if ((c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || c == 'r' || (c >= 'k' && c <= 'o') || (c >= 'A' && c <= 'F') || c == 'R' || (c >= 'K' && c <= 'O')) {
+        if ((c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || c == 'r' || (c >= 'k' && c <= 'o')
+            || (c >= 'A' && c <= 'F') || c == 'R' || (c >= 'K' && c <= 'O')) {
           b.append(ChatColor.COLOR_CHAR);
           b.append(c);
           i++;
@@ -141,9 +144,9 @@ public class ColorUtil
     }
 
     // Append '&' if '&' was the last character of the string
-    if (color)
+    if (color) {
       b.append(altColorChar);
-    else // color and hashtag cannot be true at the same time
+    } else // color and hashtag cannot be true at the same time
       // Append "&#" if "&#" were the last characters of the string
       if (hashtag) {
         b.append(altColorChar);
@@ -158,4 +161,8 @@ public class ColorUtil
     return b.toString();
   }
 
+  public static String removeColorCodes(String s)
+  {
+    return ChatColor.stripColor(s);
+  }
 }

@@ -1,5 +1,6 @@
 package dev.buchstabet.prefixes.player;
 
+import dev.buchstabet.prefixes.Prefixes;
 import dev.buchstabet.prefixes.prefixcolor.PrefixColor;
 import dev.buchstabet.prefixes.team.Team;
 import dev.buchstabet.prefixes.utils.ColorUtil;
@@ -18,9 +19,11 @@ public class PlayerData
 {
 
   private final UUID uuid;
+  private final String name;
   private Team team;
   private PrefixColor color;
   private DisplayData customPlayerData;
+  private PlayerListData playerListData;
 
   public void updatePrefix()
   {
@@ -38,6 +41,10 @@ public class PlayerData
     String chatName = getColorize(player.getName(), DisplayNameType.NAME);
     String chatSuffix = getColorize(team.getChat().getSuffix(), DisplayNameType.SUFFIX);
     player.setDisplayName(chatPrefix + chatName + chatSuffix + "§r");
+
+    //Bukkit.getScheduler().runTask(Prefixes.getInstance(), () -> new TestScoreboard(player));
+
+    Prefixes.getInstance().get(PlayerDataHolder.class).forEach(pd -> pd.getPlayerListData().update(this));
   }
 
   private String getColorize(String s, DisplayNameType type)
@@ -46,7 +53,7 @@ public class PlayerData
       return ColorUtil.colorize(s);
     }
 
-    return color.colorize(s, type);
+    return color.colorize(ColorUtil.removeColorCodes(s), type);
   }
 
 }
