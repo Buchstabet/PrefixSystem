@@ -1,0 +1,9 @@
+main: dev.buchstabet.prefixes.Prefixes
+name: prefixes
+version: 1.0
+author: Buchstabet
+api-version: 1.20
+
+commands:
+  prefix:
+    permission: prefixes.command.prefix
