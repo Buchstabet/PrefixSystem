@@ -11,17 +11,17 @@ public class PrefixNameSuffixSetup implements PrefixColorSetup
   @Override
   public String getCommandUsage()
   {
-    return "[Farbe des Prefix] [Farbe des Namens] [Farbe des Suffix]";
+    return "<Farbe des Prefix> <Farbe des Namens> <Farbe des Suffix>";
   }
 
   @Override
   public PrefixColor handleAddCommand(@NotNull String @NotNull [] args)
   {
-    if (args.length != 6) {
+    if (args.length != 7) {
       return null;
     }
 
-    return new PrefixNameSuffixColor(UUID.randomUUID(), "prefix.use.color.pns", args[3], args[4], args[5]);
+    return new PrefixNameSuffixColor(UUID.randomUUID(), args[3], "prefix.use.color.pns", args[4], args[5], args[6]);
   }
 
 }

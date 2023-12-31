@@ -13,23 +13,24 @@ public class MultiColorPrefixSetup implements PrefixColorSetup
   @Override
   public String getCommandUsage()
   {
-    return "[Buchstaben pro Farbe] [Farben getrennt]";
+    return "<Buchstaben pro Farbe> <Farben getrennt>";
   }
 
   @Override
   public PrefixColor handleAddCommand(@NotNull String @NotNull [] args)
   {
-    if (args.length < 5) {
+    if (args.length < 6) {
       return null;
     }
 
-    int skipAfter = Integer.parseInt(args[3]);
+    String arg = args[3];
+    int skipAfter = Integer.parseInt(args[4]);
     List<String> colors = new ArrayList<>();
-    for (int i = 4; i <= args.length - 1; i++) {
+    for (int i = 5; i <= args.length - 1; i++) {
       colors.add(args[i]);
     }
 
-    return new MultiColorPrefix(UUID.randomUUID(), "prefix.use.color.multicolor", colors,
+    return new MultiColorPrefix(UUID.randomUUID(), arg.replace("&", "§"), "prefix.use.color.multicolor", colors,
         skipAfter);
   }
 

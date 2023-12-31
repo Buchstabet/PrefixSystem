@@ -2,10 +2,10 @@ package dev.buchstabet.prefixes;
 
 import com.google.gson.Gson;
 import com.zaxxer.hikari.HikariDataSource;
+import dev.buchstabet.prefixes.command.color.ColorCommand;
 import dev.buchstabet.prefixes.command.PrefixCommand;
 import dev.buchstabet.prefixes.listeners.PlayerJoinListener;
 import dev.buchstabet.prefixes.player.DisplayData;
-import dev.buchstabet.prefixes.player.PlayerData;
 import dev.buchstabet.prefixes.player.PlayerDataHolder;
 import dev.buchstabet.prefixes.prefixcolor.PrefixColor;
 import dev.buchstabet.prefixes.prefixcolor.PrefixColorHolder;
@@ -79,7 +79,6 @@ public class Prefixes extends JavaPlugin
         databaseConfig.getInt("port"), 2, databaseConfig.getString("database"),
         databaseConfig.getString("username"), databaseConfig.getString("password"));
     HikariDataSource hikariDataSource = database.start();
-    System.out.println(hikariDataSource);
     register(hikariDataSource);
 
     getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
@@ -90,11 +89,18 @@ public class Prefixes extends JavaPlugin
     prefixCommand.registerSetup("onecolor", new OneColorPrefixSetup());
     Objects.requireNonNull(getCommand("prefix")).setExecutor(prefixCommand);
 
+    ColorCommand colorCommand = new ColorCommand();
+    Objects.requireNonNull(getCommand("color")).setExecutor(colorCommand);
+    getServer().getPluginManager().registerEvents(colorCommand, this);
+
     PlayerDataHolder playerData = new PlayerDataHolder();
     Bukkit.getOnlinePlayers().forEach(playerData::add);
 
     register(playerData);
-    playerData.forEach(PlayerData::updatePrefix);
+    playerData.forEach(playerData1 -> playerData1.updatePrefix(null));
+
+    int updateTime = getConfig().getInt("updatetime");
+    Bukkit.getScheduler().runTaskTimer(this, new PrefixUpdateTask(), 0L, updateTime * 20L);
   }
 
   @Override

@@ -8,9 +8,9 @@ public class OneColorPrefix extends AbstractPrefixColor
 
   private final String color;
 
-  public OneColorPrefix(UUID uuid, String permission, String color)
+  public OneColorPrefix(UUID uuid, String displayname, String permission, String color)
   {
-    super(uuid, permission);
+    super(uuid, displayname, permission);
     this.color = color;
   }
 

@@ -66,6 +66,6 @@ public class PrefixCommand implements CommandExecutor
   private void sendHelp(Player player)
   {
     setups.forEach(
-        (s, setup) -> player.sendMessage("/prefix color add " + s + " " + setup.getCommandUsage()));
+        (s, setup) -> player.sendMessage("/prefix color add <displayname> " + s + " " + setup.getCommandUsage()));
   }
 }

@@ -28,8 +28,6 @@ public final class Database
 
   public HikariDataSource start()
   {
-    System.out.println(this);
-
     HikariConfig hikariConfig = new HikariConfig();
     
     hikariConfig.setJdbcUrl("jdbc:mysql://" + hostname + ":" + port + "/" + database +

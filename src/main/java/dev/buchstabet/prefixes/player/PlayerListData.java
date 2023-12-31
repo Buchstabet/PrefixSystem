@@ -3,10 +3,12 @@ package dev.buchstabet.prefixes.player;
 import dev.buchstabet.prefixes.Prefixes;
 import dev.buchstabet.prefixes.team.TeamHolder;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
+import org.jetbrains.annotations.Nullable;
 
 public class PlayerListData
 {
@@ -24,12 +26,16 @@ public class PlayerListData
     teamHolder.getTeams().forEach(team -> teams.put(team, getTeam(team)));
   }
 
-  public void initPlayers()
+  public void reload(@Nullable List<PlayerData> updated)
   {
-    Prefixes.getInstance().get(PlayerDataHolder.class).forEach(this::update);
+    (updated == null ? Prefixes.getInstance().get(PlayerDataHolder.class) : updated).forEach(
+        playerData -> {
+          unregister(playerData);
+          register(playerData);
+        });
   }
 
-  public void update(PlayerData other)
+  public void register(PlayerData other)
   {
     Team team = getTeam(other.getTeam());
     team.addEntry(other.getName());
@@ -37,16 +43,17 @@ public class PlayerListData
 
   private Team getTeam(dev.buchstabet.prefixes.team.Team team)
   {
-    Team t = player.getScoreboard().getTeam(team.getPriorityValue() + team.getId().toString());
-    if (t == null)
+    Team tabTeam = player.getScoreboard()
+        .getTeam(team.getPriorityValue() + team.getId().toString());
+    if (tabTeam == null)
       return player.getScoreboard()
           .registerNewTeam(team.getPriorityValue() + team.getId().toString());
 
-    t.setPrefix(team.getScoreboard().getPrefix());
-    t.setSuffix(team.getScoreboard().getSuffix());
-    t.setColor(team.getColor());
+    tabTeam.setPrefix(team.getScoreboard().getPrefix());
+    tabTeam.setSuffix(team.getScoreboard().getSuffix());
+    tabTeam.setColor(team.getColor());
 
-    return t;
+    return tabTeam;
   }
 
   public void unregister(PlayerData player)

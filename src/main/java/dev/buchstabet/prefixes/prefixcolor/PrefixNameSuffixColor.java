@@ -8,10 +8,10 @@ public class PrefixNameSuffixColor extends AbstractPrefixColor
 
   private final String prefixColor, nameColor, suffixColor;
 
-  public PrefixNameSuffixColor(UUID uuid, String permission, String prefixColor, String nameColor,
+  public PrefixNameSuffixColor(UUID uuid, String displayname, String permission, String prefixColor, String nameColor,
       String suffixColor)
   {
-    super(uuid, permission);
+    super(uuid, displayname, permission);
     this.prefixColor = prefixColor;
     this.nameColor = nameColor;
     this.suffixColor = suffixColor;

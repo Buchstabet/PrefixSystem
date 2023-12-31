@@ -3,14 +3,17 @@ package dev.buchstabet.prefixes.player;
 import dev.buchstabet.prefixes.Prefixes;
 import dev.buchstabet.prefixes.prefixcolor.PrefixColor;
 import dev.buchstabet.prefixes.team.Team;
+import dev.buchstabet.prefixes.team.TeamHolder;
 import dev.buchstabet.prefixes.utils.ColorUtil;
 import dev.buchstabet.prefixes.utils.DisplayNameType;
+import java.util.List;
 import java.util.UUID;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 
 @Setter
 @Getter
@@ -25,7 +28,7 @@ public class PlayerData
   private DisplayData customPlayerData;
   private PlayerListData playerListData;
 
-  public void updatePrefix()
+  public void updatePrefix(@Nullable List<PlayerData> updated)
   {
     Player player = Bukkit.getPlayer(uuid);
     if (player == null) {
@@ -42,9 +45,7 @@ public class PlayerData
     String chatSuffix = getColorize(team.getChat().getSuffix(), DisplayNameType.SUFFIX);
     player.setDisplayName(chatPrefix + chatName + chatSuffix + "§r");
 
-    //Bukkit.getScheduler().runTask(Prefixes.getInstance(), () -> new TestScoreboard(player));
-
-    Prefixes.getInstance().get(PlayerDataHolder.class).forEach(pd -> pd.getPlayerListData().update(this));
+    getPlayerListData().reload(updated);
   }
 
   private String getColorize(String s, DisplayNameType type)
@@ -56,4 +57,10 @@ public class PlayerData
     return color.colorize(ColorUtil.removeColorCodes(s), type);
   }
 
+  public boolean updateTeam()
+  {
+    Team old = team;
+    team = Prefixes.getInstance().get(TeamHolder.class).loadTeam(Bukkit.getPlayer(uuid));
+    return !old.equals(team);
+  }
 }

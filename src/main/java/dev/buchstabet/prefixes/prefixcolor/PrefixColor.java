@@ -21,6 +21,8 @@ public interface PrefixColor
 
   String colorize(String input, DisplayNameType type);
 
+  String getDisplayname();
+
   class Serializer implements JsonDeserializer<PrefixColor>, JsonSerializer<PrefixColor>
   {
 

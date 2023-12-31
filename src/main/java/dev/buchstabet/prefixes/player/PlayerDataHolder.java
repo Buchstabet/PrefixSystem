@@ -56,9 +56,10 @@ public class PlayerDataHolder extends ArrayList<PlayerData>
 
       Bukkit.getScheduler().runTask(Prefixes.getInstance(), () -> {
         playerData.setPlayerListData(new PlayerListData(player));
-        playerData.getPlayerListData().initPlayers();
         this.add(playerData);
-        playerData.updatePrefix();
+        playerData.updatePrefix(null);
+
+        Prefixes.getInstance().get(PlayerDataHolder.class).forEach(pd -> pd.getPlayerListData().register(playerData));
       });
     });
   }

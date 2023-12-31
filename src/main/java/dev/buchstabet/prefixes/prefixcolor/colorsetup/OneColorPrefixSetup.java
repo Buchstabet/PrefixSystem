@@ -11,17 +11,17 @@ public class OneColorPrefixSetup implements PrefixColorSetup
   @Override
   public String getCommandUsage()
   {
-    return "[Farbe des Tags]";
+    return "<Farbe des Tags>";
   }
 
   @Override
   public PrefixColor handleAddCommand(@NotNull String @NotNull [] args)
   {
-    if (args.length != 4) {
+    if (args.length != 5) {
       return null;
     }
 
-    return new OneColorPrefix(UUID.randomUUID(), "prefix.use.color.onecolor", args[3]);
+    return new OneColorPrefix(UUID.randomUUID(), args[3], "prefix.use.color.onecolor", args[4]);
   }
 
 }

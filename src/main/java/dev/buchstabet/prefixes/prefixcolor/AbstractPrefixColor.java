@@ -11,7 +11,7 @@ public class AbstractPrefixColor implements PrefixColor
 {
 
   private final UUID uuid;
-  @Getter private final String permission;
+  @Getter private final String displayname, permission;
 
   @Override
   public UUID getId()
