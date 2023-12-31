@@ -1,15 +1,25 @@
 package dev.buchstabet.prefixes.player;
 
-import lombok.Getter;
+import dev.buchstabet.prefixes.utils.ColorUtil;
 
 public class DisplayData
 {
 
-  @Getter private final String prefix, suffix;
+  private final String prefix, suffix;
 
   public DisplayData(String prefix, String suffix)
   {
     this.prefix = prefix;
     this.suffix = suffix;
+  }
+
+  public String getPrefix()
+  {
+    return ColorUtil.colorize(prefix);
+  }
+
+  public String getSuffix()
+  {
+    return ColorUtil.colorize(suffix);
   }
 }

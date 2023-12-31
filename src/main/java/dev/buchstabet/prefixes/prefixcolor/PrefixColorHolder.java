@@ -3,6 +3,7 @@ package dev.buchstabet.prefixes.prefixcolor;
 import com.google.gson.Gson;
 import com.zaxxer.hikari.HikariDataSource;
 import dev.buchstabet.prefixes.Prefixes;
+import dev.buchstabet.prefixes.player.PlayerData;
 import dev.buchstabet.prefixes.utils.GsonManager;
 import java.io.File;
 import java.io.FileWriter;
@@ -19,16 +20,25 @@ import java.util.concurrent.CompletableFuture;
 public class PrefixColorHolder extends ArrayList<PrefixColor>
 {
 
-  public CompletableFuture<Void> updateColor(UUID uuid, PrefixColor color)
+  public CompletableFuture<Void> updateColor(PlayerData playerData)
   {
     return CompletableFuture.runAsync(() -> {
       HikariDataSource dataSource = Prefixes.getInstance().get(HikariDataSource.class);
       try (Connection connection = dataSource.getConnection()) {
-        PreparedStatement preparedStatement = connection.prepareStatement(
-            "INSERT INTO player_selected_prefix (uuid, color) VALUES (?, ?) ON DUPLICATE KEY UPDATE color = ?;");
-        preparedStatement.setString(1, uuid.toString());
-        preparedStatement.setString(2, color.getId().toString());
-        preparedStatement.setString(3, color.getId().toString());
+        PreparedStatement preparedStatement;
+
+        if (playerData.getColor() != null) {
+          preparedStatement = connection.prepareStatement(
+              "INSERT INTO player_selected_prefix (uuid, color) VALUES (?, ?) ON DUPLICATE KEY UPDATE color = ?;");
+          preparedStatement.setString(1, playerData.getUuid().toString());
+          preparedStatement.setString(2, playerData.getColor().getId().toString());
+          preparedStatement.setString(3, playerData.getColor().getId().toString());
+        } else {
+          preparedStatement = connection.prepareStatement(
+              "DELETE FROM player_selected_prefix WHERE (uuid=?);");
+          preparedStatement.setString(1, playerData.getUuid().toString());
+        }
+
         preparedStatement.execute();
       } catch (SQLException ex) {
         throw new RuntimeException(ex);
@@ -57,8 +67,7 @@ public class PrefixColorHolder extends ArrayList<PrefixColor>
 
   public Optional<PrefixColor> find(String uuid)
   {
-    return this.stream()
-        .filter(prefixColor -> prefixColor.getId().toString().equals(uuid))
+    return this.stream().filter(prefixColor -> prefixColor.getId().toString().equals(uuid))
         .findFirst();
   }
 
@@ -66,7 +75,8 @@ public class PrefixColorHolder extends ArrayList<PrefixColor>
   {
     File file = new File("plugins/prefixes", "colors.json");
     try (FileWriter writer = new FileWriter(file)) {
-      Gson gson = Prefixes.getInstance().get(GsonManager.class).createBuilder().setPrettyPrinting().create();
+      Gson gson = Prefixes.getInstance().get(GsonManager.class).createBuilder().setPrettyPrinting()
+          .create();
       String json = gson.toJson(this);
       writer.write(json);
       writer.flush();

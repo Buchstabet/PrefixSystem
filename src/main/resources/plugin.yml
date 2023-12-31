@@ -5,13 +5,8 @@ author: Buchstabet
 api-version: 1.20
 
 commands:
-  prefix:
-    permission: prefixes.command.prefix
-    aliases:
-      - prefixes
-      - präfix
   color:
-    permission: prefixes.command.color
+    permission: "prefixes.command.color"
     aliases:
       - colors
       - farbe

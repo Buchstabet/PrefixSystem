@@ -22,15 +22,15 @@ public class PrefixNameSuffixColor extends AbstractPrefixColor
   {
     switch (type) {
       case PREFIX -> {
-        return prefixColor + input;
+        return super.colorize(prefixColor + input, type);
       }
 
       case NAME -> {
-        return nameColor + input;
+        return super.colorize(nameColor + input, type);
       }
 
       case SUFFIX -> {
-        return suffixColor + input;
+        return super.colorize(suffixColor + input, type);
       }
     }
 

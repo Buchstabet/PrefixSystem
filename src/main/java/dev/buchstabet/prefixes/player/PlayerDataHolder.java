@@ -19,11 +19,13 @@ public class PlayerDataHolder extends ArrayList<PlayerData>
     TeamHolder teamHolder = Prefixes.getInstance().get(TeamHolder.class);
 
     return prefixColors.loadColor(player.getUniqueId()).thenApply(prefixColor -> {
-      prefixColor.ifPresent(color -> player.sendMessage(color.getId() + " was selected"));
-
       PlayerData playerData = new PlayerData(player.getUniqueId(), player.getName());
       playerData.setTeam(teamHolder.loadTeam(player));
-      prefixColor.ifPresent(playerData::setColor);
+      prefixColor.ifPresent(color -> {
+        if (color.getPermission() != null && !player.hasPermission(color.getPermission()))
+          return;
+        playerData.setColor(color);
+      });
       return playerData;
     });
   }
@@ -48,18 +50,16 @@ public class PlayerDataHolder extends ArrayList<PlayerData>
       }
 
       if (playerData == null) {
-        player.sendMessage("Es wurde kein Team für dich gefunden.");
         return;
       }
-
-      player.sendMessage("Dein Team ist nun " + playerData.getTeam().getId());
 
       Bukkit.getScheduler().runTask(Prefixes.getInstance(), () -> {
         playerData.setPlayerListData(new PlayerListData(player));
         this.add(playerData);
         playerData.updatePrefix(null);
 
-        Prefixes.getInstance().get(PlayerDataHolder.class).forEach(pd -> pd.getPlayerListData().register(playerData));
+        Prefixes.getInstance().get(PlayerDataHolder.class)
+            .forEach(pd -> pd.getPlayerListData().register(playerData));
       });
     });
   }

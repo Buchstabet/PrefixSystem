@@ -9,7 +9,9 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import dev.buchstabet.prefixes.utils.DisplayNameType;
 import java.lang.reflect.Type;
+import java.util.Map;
 import java.util.UUID;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
 public interface PrefixColor
@@ -23,9 +25,11 @@ public interface PrefixColor
 
   String getDisplayname();
 
+  @RequiredArgsConstructor
   class Serializer implements JsonDeserializer<PrefixColor>, JsonSerializer<PrefixColor>
   {
 
+    private final Map<String, Class<? extends PrefixColor>> classes;
 
     @SneakyThrows
     @Override
@@ -33,7 +37,9 @@ public interface PrefixColor
         JsonDeserializationContext jsonDeserializationContext) throws JsonParseException
     {
       JsonObject obj = jsonElement.getAsJsonObject();
-      Class<?> aClass = Class.forName(obj.get("type").getAsString());
+      Class<?> aClass = classes.get(obj.get("type").getAsString());
+      if (aClass == null)
+        return null;
       return jsonDeserializationContext.deserialize(obj.get("data"), aClass);
     }
 
@@ -42,7 +48,14 @@ public interface PrefixColor
         JsonSerializationContext jsonSerializationContext)
     {
       JsonObject obj = new JsonObject();
-      obj.addProperty("type", prefixColor.getClass().getName());
+      classes.forEach((s, aClass) -> {
+        if (!aClass.equals(prefixColor.getClass()))
+          return;
+        obj.addProperty("type", s);
+      });
+
+      if (obj.get("type") == null)
+        return null;
       obj.add("data", jsonSerializationContext.serialize(prefixColor));
       return obj;
     }

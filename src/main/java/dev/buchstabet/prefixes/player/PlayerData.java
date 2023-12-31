@@ -16,17 +16,16 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 @Setter
-@Getter
 @RequiredArgsConstructor
 public class PlayerData
 {
 
-  private final UUID uuid;
-  private final String name;
-  private Team team;
-  private PrefixColor color;
-  private DisplayData customPlayerData;
-  private PlayerListData playerListData;
+  @Getter private final UUID uuid;
+  @Getter private final String name;
+  private Team team, customTeam;
+  @Getter private PrefixColor color;
+  @Getter private PlayerListData playerListData;
+  @Getter private boolean update;
 
   public void updatePrefix(@Nullable List<PlayerData> updated)
   {
@@ -35,14 +34,17 @@ public class PlayerData
       return;
     }
 
-    String tabPrefix = getColorize(team.getTab().getPrefix(), DisplayNameType.PREFIX);
+    DisplayData tab = getTeam().getTab();
+    DisplayData chat = getTeam().getChat();
+
+    String tabPrefix = getColorize(tab.getPrefix(), DisplayNameType.PREFIX);
     String tabName = getColorize(player.getName(), DisplayNameType.NAME);
-    String tabSuffix = getColorize(team.getTab().getSuffix(), DisplayNameType.SUFFIX);
+    String tabSuffix = getColorize(tab.getSuffix(), DisplayNameType.SUFFIX);
     player.setPlayerListName(tabPrefix + tabName + tabSuffix);
 
-    String chatPrefix = getColorize(team.getChat().getPrefix(), DisplayNameType.PREFIX);
+    String chatPrefix = getColorize(chat.getPrefix(), DisplayNameType.PREFIX);
     String chatName = getColorize(player.getName(), DisplayNameType.NAME);
-    String chatSuffix = getColorize(team.getChat().getSuffix(), DisplayNameType.SUFFIX);
+    String chatSuffix = getColorize(chat.getSuffix(), DisplayNameType.SUFFIX);
     player.setDisplayName(chatPrefix + chatName + chatSuffix + "§r");
 
     getPlayerListData().reload(updated);
@@ -50,17 +52,33 @@ public class PlayerData
 
   private String getColorize(String s, DisplayNameType type)
   {
-    if (color == null) {
+    if (color == null || !getTeam().isUseCustomColors()) {
       return ColorUtil.colorize(s);
     }
 
     return color.colorize(ColorUtil.removeColorCodes(s), type);
   }
 
-  public boolean updateTeam()
+  public void updateTeam()
   {
-    Team old = team;
-    team = Prefixes.getInstance().get(TeamHolder.class).loadTeam(Bukkit.getPlayer(uuid));
-    return !old.equals(team);
+    setTeam(Prefixes.getInstance().get(TeamHolder.class).loadTeam(Bukkit.getPlayer(uuid)));
   }
+
+  public Team getTeam()
+  {
+    return customTeam == null ? team : customTeam;
+  }
+
+  public void setTeam(Team team)
+  {
+    this.team = team;
+    setUpdate(true);
+  }
+
+  public void setCustomTeam(Team customTeam)
+  {
+    this.customTeam = customTeam;
+    setUpdate(true);
+  }
+
 }

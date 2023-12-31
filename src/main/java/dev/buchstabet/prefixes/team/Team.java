@@ -16,5 +16,11 @@ public class Team
   private final ChatColor color;
   private final DisplayData tab, scoreboard, chat;
   private final String permission;
+  private final boolean useCustomColors;
 
+  public Team(int priorityValue, ChatColor color, DisplayData tab, DisplayData scoreboard,
+      DisplayData chat)
+  {
+    this(UUID.randomUUID(), priorityValue, color, tab, scoreboard, chat, null, false);
+  }
 }

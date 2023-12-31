@@ -16,7 +16,6 @@ public class PlayerJoinListener implements Listener
   {
     PlayerDataHolder playerDataHolder = Prefixes.getInstance().get(PlayerDataHolder.class);
     playerDataHolder.add(event.getPlayer());
-
   }
 
   @EventHandler(ignoreCancelled = true)
@@ -24,12 +23,10 @@ public class PlayerJoinListener implements Listener
   {
     PlayerDataHolder playerDataHolder = Prefixes.getInstance().get(PlayerDataHolder.class);
     playerDataHolder.find(event.getPlayer().getUniqueId()).ifPresent(playerData -> {
-      playerDataHolder.forEach(playerListData -> playerListData.getPlayerListData().unregister(playerData));
+      playerDataHolder.forEach(
+          playerListData -> playerListData.getPlayerListData().unregister(playerData));
       playerDataHolder.remove(playerData);
     });
-
-    //event.getPlayer().setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
-
   }
 
 

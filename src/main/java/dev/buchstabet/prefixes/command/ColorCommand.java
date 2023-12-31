@@ -1,4 +1,4 @@
-package dev.buchstabet.prefixes.command.color;
+package dev.buchstabet.prefixes.command;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +32,7 @@ public class ColorCommand implements CommandExecutor, Listener
   public void onInventoryClose(InventoryCloseEvent event)
   {
     ColorInventory inventory = playerColorInventoryMap.get((Player) event.getPlayer());
-    if (inventory == null || inventory.getInventory().equals(event.getInventory())) {
+    if (inventory == null || !inventory.getInventory().equals(event.getInventory())) {
       return;
     }
 

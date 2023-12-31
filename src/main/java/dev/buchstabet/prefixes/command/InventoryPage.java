@@ -1,4 +1,4 @@
-package dev.buchstabet.prefixes.command.color;
+package dev.buchstabet.prefixes.command;
 
 import java.util.List;
 import lombok.Getter;

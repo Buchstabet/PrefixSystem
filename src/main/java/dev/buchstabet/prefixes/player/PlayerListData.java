@@ -37,7 +37,7 @@ public class PlayerListData
 
   public void register(PlayerData other)
   {
-    Team team = getTeam(other.getTeam());
+    Team team = getTeam( other.getTeam());
     team.addEntry(other.getName());
   }
 
