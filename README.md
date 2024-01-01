@@ -156,9 +156,9 @@ Vor dem ersten Start muss die ``setup.sql`` Datei auf der Datenbank ausgeführt 
 eine Tabelle mit dem Namen `player_selected_prefix` erstellt, die die ausgewählten Farben der
 Spieler speichert.
 
-`CREATE TABLE `player_selected_prefix`
+``CREATE TABLE `player_selected_prefix`
 (
     `uuid`  VARCHAR(36) NOT NULL,
     `color` VARCHAR(36) NOT NULL,
     PRIMARY KEY (`uuid`)
-);`
+);``
