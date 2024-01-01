@@ -155,3 +155,10 @@ Die Datei befindet sich in der Jar-Datei. Mit z.B. WinRAR kann eine Jar-Datei ge
 Vor dem ersten Start muss die ``setup.sql`` Datei auf der Datenbank ausgeführt werden, dadurch wird
 eine Tabelle mit dem Namen `player_selected_prefix` erstellt, die die ausgewählten Farben der
 Spieler speichert.
+
+`CREATE TABLE `player_selected_prefix`
+(
+    `uuid`  VARCHAR(36) NOT NULL,
+    `color` VARCHAR(36) NOT NULL,
+    PRIMARY KEY (`uuid`)
+);`
