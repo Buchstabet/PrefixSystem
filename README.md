@@ -36,7 +36,7 @@ Mit ``color`` wird die Farbe des Nametags gesetzt. Es stehen folgende Farben zur
 ``UNDERLINE``
 ``ITALIC``
 
-``Tab`` verändert das Design der Tablist, `scoreboard` bestimmt das Aussehen des Namens über dem
+``tab`` verändert das Design der Tablist, `scoreboard` bestimmt das Aussehen des Namens über dem
 Spieler und `chat` das Erscheinungsbild im Chat.
 Mit den `useCustomColors` wird bestimmt, ob das persönliche Farbdesign des Spielers berücksichtigt
 wird oder nicht.
@@ -56,7 +56,8 @@ Farben sind anpassungen an der färbung des Namens.
 ### colors.json
 
 Über ``type`` wird festgelegt, von welchem Typ (Muster) eine Farbe ist. Nach dem Pluginstart wird
-für jeden Type Color ein Mustereintrag in der Config erstellt. Es stehen folgende Typen zur Auswahl:
+für jeden Type ein Mustereintrag in der Config (``colors.json``) erstellt. Es stehen folgende Typen
+zur Auswahl:
 
 `multi_color_prefix` verschieden Farben werden nacheinander in einem bestimmten
 Abstand (`skipAfter`) wiederholt.
@@ -97,28 +98,48 @@ Die restlichen Konfigurationen sind abhängig vom ``type``:
 ## config.yml
 
 In der ``config.yml`` wird unter `database` eine Datenbank verbindung eingetragen.
-In ``updatetime`` werden die Sekunden eingetragen, nach denen die Teams und Farben neu geladen werden
+In ``updatetime`` werden die Sekunden eingetragen, nach denen die Teams und Farben neu geladen
+werden
 sollen.
 
 ## API für Entwickler
 
 Jeder Spieler bekommt beim Betreten eine ``PlayerData`` geladen.
 Die ``PlayerData`` wird in ``PlayerDataHolder.class`` gespeichert und kann daraus geladen werden.
-An die Instanz des ``PlayerDataHolder`` kommt man über `Prefixes.getInstance().get(PlayerDataHolder.class)`.
+An die Instanz des ``PlayerDataHolder`` kommt man
+über `Prefixes.getInstance().get(PlayerDataHolder.class)`.
 
 Mit ``PlayerData.setCustomTeam(Team team)`` kann man einem Spieler ein CustomTeam setzen.
-Das CustomTeam wird priorisiert vor dem normalen Team angezeigt, 
+Das CustomTeam wird priorisiert vor dem normalen Team angezeigt,
 dadurch kann beispielsweise der Teamname in einem Spielmodus angezeigt werden.
 
-``PrefixUpdateTask.class`` erbt von Runnable und kann durch  `Prefixes.getInstance().get(PrefixUpdateTask.class)` aufgerufen werden.
+``PrefixUpdateTask.class`` erbt von Runnable und kann
+durch  `Prefixes.getInstance().get(PrefixUpdateTask.class)` aufgerufen werden.
 Über `PrefixUpdateTask.run()` können die Nametags aktualisiert werden.
+
+Das Event ``PrefixPlayerDataLoadedEvent`` wird ausgerufen, wenn Daten für ein Spieler
+geladen wurden.
+Wenn die ``PlayerData`` direkt nach dem Betreten benötigt wird, muss dieses Event verwendet
+werden, da beim ``PlayerJoinEvent`` nicht sichergestellt ist, dass der Spieler bereits geladen
+wurde.
+
+Die ``PlayerData`` wird mit dem `PlayerLoginEvent` asynchron geladen.
 
 ## Colorcodes
 
-Colorcodes werden unterstützt und mit dem ``&`` Zeichen eingeleitet. Es werden sowohl die klassischen Colorcodes:
-`a`, `b`, `c`, `d`, `e`, `f`, `k`, `l`, `m`, `n`, `o`, `r`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, als auch die modernen Hex Codes unterstützt, die mit  einem `&` und `#` eingeleitet werden (z.B.: `&#EDB5FF`)
+Colorcodes werden unterstützt und mit dem ``&`` Zeichen eingeleitet. Es werden sowohl die
+klassischen Colorcodes:
+`a`, `b`, `c`, `d`, `e`, `f`, `k`, `l`, `m`, `n`, `o`, `r`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`,
+als auch die modernen Hex Codes unterstützt, die mit einem `&` und `#` eingeleitet werden (
+z.B.: `&#EDB5FF`)
 
 ## Befehl /color
 
-Der Befehl /color öffnet das Farbauswahl Inventar. In diesem Inventar kann eine Farbe ausgewählt oder wieder gelöscht werden.
+Der Befehl /color öffnet das Farbauswahl Inventar. In diesem Inventar kann eine Farbe ausgewählt
+oder wieder gelöscht werden.
 Es werden nur die Farben angezeigt, für die eine Berechtigung vorhanden ist.
+
+## In-Game Erscheinungsbild
+
+Das Aussehen des Plugins kann in der ``visualization.properties`` verändert werden.
+Die Datei befindet sich in der Jar-Datei. Mit z.B. WinRAR kann eine Jar-Datei geöffnet werden.

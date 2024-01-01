@@ -1,6 +1,7 @@
 package dev.buchstabet.prefixes.player;
 
 import dev.buchstabet.prefixes.Prefixes;
+import dev.buchstabet.prefixes.listeners.PrefixPlayerDataLoadedEvent;
 import dev.buchstabet.prefixes.prefixcolor.PrefixColorHolder;
 import dev.buchstabet.prefixes.team.TeamHolder;
 import java.util.ArrayList;
@@ -60,6 +61,9 @@ public class PlayerDataHolder extends ArrayList<PlayerData>
 
         Prefixes.getInstance().get(PlayerDataHolder.class)
             .forEach(pd -> pd.getPlayerListData().register(playerData));
+
+        Bukkit.getServer().getPluginManager()
+            .callEvent(new PrefixPlayerDataLoadedEvent(player, playerData));
       });
     });
   }
