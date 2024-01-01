@@ -35,6 +35,7 @@ import java.util.Properties;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
@@ -125,6 +126,8 @@ public class Prefixes extends JavaPlugin
     register(PrefixUpdateTask.class, prefixUpdateTask);
     register(VisualizationProperties.class,
         loadProperties("visualization.properties", VisualizationProperties.class));
+
+    System.out.println(Arrays.stream(ChatColor.values()).map(Enum::name).collect(Collectors.joining("\n")));
   }
 
   @SneakyThrows
