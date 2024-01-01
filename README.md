@@ -152,3 +152,6 @@ Es werden nur die Farben angezeigt, für die eine Berechtigung vorhanden ist.
 
 Das Aussehen des Plugins kann in der ``visualization.properties`` verändert werden.
 Die Datei befindet sich in der Jar-Datei. Mit z.B. WinRAR kann eine Jar-Datei geöffnet werden.
+
+## Einrichten der Datenbank
+
