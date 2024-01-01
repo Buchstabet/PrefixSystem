@@ -51,7 +51,6 @@ nicht die nötige Berechtigung für ein anderes Team hat. Eingetragen wird die `
 
 ![grafik](https://github.com/Buchstabet/PrefixSystem/assets/71724439/1e6090a7-9473-446a-b39f-68e9167b02be)
 
-
 ## Colors
 
 Farben sind anpassungen an der färbung des Namens.
@@ -100,7 +99,6 @@ Die restlichen Konfigurationen sind abhängig vom ``type``:
 
 ![grafik](https://github.com/Buchstabet/PrefixSystem/assets/71724439/839dd477-5842-4e18-9ed4-5d2436ab2c2b)
 
-
 ## config.yml
 
 In der ``config.yml`` wird unter `database` eine Datenbank verbindung eingetragen.
@@ -109,7 +107,6 @@ werden
 sollen.
 
 ![grafik](https://github.com/Buchstabet/PrefixSystem/assets/71724439/3dacf3af-9d2a-4a16-a18c-e2e8052de9a3)
-
 
 ## API für Entwickler
 
@@ -155,3 +152,6 @@ Die Datei befindet sich in der Jar-Datei. Mit z.B. WinRAR kann eine Jar-Datei ge
 
 ## Einrichten der Datenbank
 
+Vor dem ersten Start muss die ``setup.sql`` Datei auf der Datenbank ausgeführt werden, dadurch wird
+eine Tabelle mit dem Namen `player_selected_prefix` erstellt, die die ausgewählten Farben der
+Spieler speichert.
