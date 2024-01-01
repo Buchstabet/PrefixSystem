@@ -49,6 +49,9 @@ Nach dem Plugin start, werden standardmäßig zwei Teams als Beispiel erstellt.
 In ``defaultTeam`` wird eingetragen, welches Team als Standard gesetzt werden soll, wenn der Spieler
 nicht die nötige Berechtigung für ein anderes Team hat. Eingetragen wird die `id` des Teams.
 
+![grafik](https://github.com/Buchstabet/PrefixSystem/assets/71724439/1e6090a7-9473-446a-b39f-68e9167b02be)
+
+
 ## Colors
 
 Farben sind anpassungen an der färbung des Namens.
@@ -95,12 +98,18 @@ Die restlichen Konfigurationen sind abhängig vom ``type``:
 ``nameColor`` ist die Farbe, mit der der Name gefärbt werden soll.
 ``suffixColor`` ist die Farbe, mit der der Suffix gefärbt werden soll.
 
+![grafik](https://github.com/Buchstabet/PrefixSystem/assets/71724439/839dd477-5842-4e18-9ed4-5d2436ab2c2b)
+
+
 ## config.yml
 
 In der ``config.yml`` wird unter `database` eine Datenbank verbindung eingetragen.
 In ``updatetime`` werden die Sekunden eingetragen, nach denen die Teams und Farben neu geladen
 werden
 sollen.
+
+![grafik](https://github.com/Buchstabet/PrefixSystem/assets/71724439/3dacf3af-9d2a-4a16-a18c-e2e8052de9a3)
+
 
 ## API für Entwickler
 
